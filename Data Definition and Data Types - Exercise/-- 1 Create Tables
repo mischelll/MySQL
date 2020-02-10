@@ -1,0 +1,266 @@
+-- 1 Create Tables
+CREATE TABLE minions (
+    id INT PRIMARY KEY AUTO_INCREMENT ,
+    name VARCHAR (40) NOT NULL ,
+    age INT
+
+);
+
+CREATE TABLE towns (
+    id INT PRIMARY KEY AUTO_INCREMENT ,
+    name VARCHAR (40) NOT NULL
+);
+
+-- 2 Alter Minions Table
+alter table minions
+add column town_id int;
+
+alter table minions
+add constraint fk_town_id
+foreign key(town_id) references towns(id);
+
+-- 3. Insert Records in Both Tables
+INSERT INTO `towns` (id,name)
+VALUES (1,'Sofia');
+INSERT INTO `towns` (id,name)
+VALUES (2,'Plovdiv');
+INSERT INTO `towns` (id,name)
+VALUES (3,'Varna');
+
+INSERT INTO `minions` (id,name, age, town_id)
+VALUES (1,'Kevin', 22, 1);
+INSERT INTO `minions` (id,name, age, town_id)
+VALUES (2,'Bob', 15, 3);
+INSERT INTO `minions` (id,name, age, town_id)
+VALUES (3,'Steward', NULL, 2);
+
+-- 4. Truncate Table Minions
+delete from minions;
+
+-- 5. Drop All Tables
+drop table minions;
+drop table towns;
+
+-- 6. Create Table People
+CREATE TABLE `people`(
+    `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL ,
+    `name` VARCHAR (200) NOT NULL ,
+    `picture` TINYBLOB,
+    `height` DOUBLE(3,2),
+    `weight` DOUBLE(5,2),
+    `gender` ENUM('m','f') NOT NULL ,
+    `birthdate` DATE NOT NULL ,
+    `biography` TEXT
+
+);
+
+
+insert into people(id, name, picture, height, weight, gender, birthdate,biography) values
+(1,'jose',null,1.79,60,'m','1999-09-9','sometext'),
+(2,'jose',null,1.79,69,'m','1999-09-9','sometext'),
+(3,'jose',null,1.79,69,'m','1999-09-9','sometext'),
+(4,'jose',null,1.79,69,'m','1999-09-9','sometext'),
+(5,'jose',null,1.79,69,'m','1999-09-9','sometext');
+
+-- 7. Create Table Users
+create table users(
+`id` int unsigned auto_increment primary key,
+`username` varchar(30) not null,
+`password` varchar(26) not null,
+`profile_picture` tinyblob,
+`last_login_time` datetime,
+`is_deleted` bit
+
+
+);
+
+insert into users(id ,username ,password ,profile_picture, last_login_time, is_deleted) values
+(1,'pesho','1234',null, '1999-02-12',1),
+(2,'sesho','1234',null, '1999-02-12',1),
+(3,'mesho','1234',null, '1999-02-12',0),
+(4,'tesho','1234',null, '1999-02-12',0),
+(5,'qesho','1234',null, '1999-02-12',1);
+
+-- 8. Change Primary Key
+alter table users modify id int not null;
+alter table users drop primary key;
+alter table users add constraint pk_users primary key(id, username);
+
+-- 9. Set Default Value of a Field
+alter table users
+modify column `last_login_time` timestamp default current_timestamp;
+
+-- 10. Set Unique Field
+alter table users
+drop primary key,
+add constraint pk_id primary key(id),
+add constraint uq_username unique(username);
+
+-- 11. Movies Database
+CREATE TABLE directors (
+id INT AUTO_INCREMENT, director_name VARCHAR(55) NOT NULL, notes VARCHAR(255), PRIMARY KEY (id));
+ 
+CREATE TABLE genres (
+id INT AUTO_INCREMENT, genre_name VARCHAR(55) NOT NULL, notes VARCHAR(255), PRIMARY KEY (id));
+ 
+CREATE TABLE categories (
+id INT AUTO_INCREMENT, category_name VARCHAR(55) NOT NULL, notes VARCHAR(255), PRIMARY KEY (id));
+ 
+CREATE TABLE movies (
+id INT AUTO_INCREMENT, title VARCHAR(55) NOT NULL, director_id INT, copyright_year YEAR,
+length INT, genre_id INT, category_id INT, rating INT, notes VARCHAR(255), PRIMARY KEY (id));
+ 
+INSERT INTO `directors` (director_name, notes) VALUES ('Koceto Kocev', 'executive director'),
+('Bat Mitio', 'very important person'), ('Chicho Kolio', 'pocheten director'), ('Bacho Kolio', 'responsible for special effects'),
+('Kiro Kirov', 'camera director');
+ 
+INSERT INTO genres (genre_name, notes) VALUES ('comedy', 'people should laugh'),
+('action', 'give me some action, baby'), ('drama', 'love stories'), ('action-comedy', 'peoples favourite'),
+('thriller', 'serious');
+ 
+INSERT INTO categories (category_name, notes) VALUES ('best movie', 'of the year'),
+('best comedy', 'of the year'), ('best action movie', 'of the year'), ('best scenario movie', 'of the year'),
+('oscar movies', 'of the year');
+ 
+INSERT INTO movies (title, director_id, copyright_year, length, genre_id, category_id, rating, notes)
+VALUES ('Brave Heart', 1, 1990, 127, 2, 5, 100, 'best movie'), ('Gladiator', 1, 2005, 158, 2, 5, 99, 'best movie of the year'),
+('Bai Ganio', 3, 1980, 75, 1, 2, 99, 'best comedy'), ('White collar', 4, 2016, 65, 4, 4, 99, 'best scenario movie'),
+('Da Vincis Demons', 4, 2017, 62, 4, 4, 98, 'best series movie');
+
+-- 12. Car Rental Database
+create table categories(
+	`id` int auto_increment primary key,
+	`category` varchar(40) not null,
+    `daily_rate` float ,
+    `weekly_rate` float,
+    `monthly_rate`float,
+    `weekend_rate` float
+);
+insert into categories(category, daily_rate,
+weekly_rate, monthly_rate, weekend_rate) values 
+('asd',6.2,2.7,1.4,2.3),
+('adfd',1.2,2.3,1.7,3.3),
+('asfdsd',2.2,8.2,4.4,2.9);
+
+create table cars(
+	`id` int auto_increment primary key,
+    `plate_number` varchar(40),
+    `make` varchar(40) ,
+    `model` varchar(40) ,
+    `car_year` year ,
+    `category_id` int,
+    `doors` int ,
+    `picture`tinyblob ,
+    `car_condition` text ,
+    `available` boolean
+);
+
+insert into cars(plate_number, make, model,car_year, category_id, doors, picture, car_condition, available) values
+('as36d','bmw','model1', 2016, 3, 5,'snimka','fine',1),
+('as34d','merc','model1', 2016, 1, 6,'snimka','fine',0),
+('as3sd','bmw','model1', 2016, 2, 3,'snimka','fine',1);
+
+create table employees(
+	`id` int auto_increment primary key,
+    `first_name` varchar(40),
+    `last_name` varchar(40),
+    `title` varchar(50),
+    `notes` text
+);
+
+insert into employees( first_name, last_name, title, notes) values
+('ime35','imevtoro','atitle','ok'),
+('ime','name','thetitle','good'),
+('imee','ime4','title','ok');
+
+create table customers(
+	`id` int auto_increment primary key,
+    `driver_licence_number` varchar(40) not null,
+    `full_name` varchar(50) ,
+    `address` varchar(50) ,
+    `city` varchar(40) ,
+    `zip_code` int ,
+    `notes` text
+);
+
+insert into customers( driver_licence_number, full_name,address, city, zip_code, notes) values
+('123das','ime','fulladdress','grad',2433,'mazalo'),
+('123das','ime','fulladdreress','grad',9233,'mazalo00'),
+('123das','ime','fulladdress','grad',2434,'mazalo');
+
+create table rental_orders(
+	`id` int auto_increment primary key,
+    `employee_id` int not null,
+    `customer_id` int not null,
+    `car_id` int,
+    `car_condition` varchar(255) ,
+    `tank_level` int ,
+    `kilometrage_start` int ,
+    `kilometrage_end` int ,
+    `total_kilometrage` int ,
+    `start_date` date ,
+    `end_date` date ,
+    `total_days` int ,
+    `rate_applied` float ,
+    `tax_rate` float,
+    `order_status` varchar(50),
+    `notes` text
+);
+
+insert into rental_orders(employee_id, customer_id, car_id, car_condition, tank_level,
+kilometrage_start,kilometrage_end, total_kilometrage) values
+(4,2,1,'dobre',5,100,200,500),
+(1,5,2,'dobbre',2,100,200,5040),
+(2,7,3,'do0bre',3,120,201230,500);
+
+
+-- 15. Basic Insert
+insert into `towns`(`name`) values
+('Sofia'),
+('Plovdiv'),
+('Varna'),
+('Burgas');
+
+insert into departments(`name`) values
+('Engineering'),
+('Sales'),
+('Marketing'),
+('Software Development'),
+('Quality Assurance');
+
+insert into employees(`first_name`,middle_name,last_name,`job_title`,`department_id`, `hire_date`, `salary`) values
+('Ivan', 'Ivanov', 'Ivanov','.NET Developer', 4,'2013-02-01',3500.00),
+('Petar', 'Petrov', 'Petrov','Senior Engineer', 1,'2004-03-02',4000.00),
+('Maria', 'Petrova', 'Ivanova','Intern', 5,'2016-08-28',525.25),
+('Georgi', 'Terziev', 'Ivanov','CEO', 2,'2007-12-09',3000.00),
+('Peter', 'Pan', 'Pan','Intern', 3,'2016-08-28',599.88);
+16. Basic Select All Fields
+select * from towns;
+select * from departments;
+select * from employees;
+
+-- 17. Basic Select All Fields and Order Them
+select * from towns order by `name` ASC;
+select * from departments order by `name` ASC;
+select * from employees order by `salary` DESC;
+
+-- 18. Basic Select Some Fields
+SELECT `name` FROM `towns` ORDER BY `name`;
+
+SELECT `name` FROM `departments` ORDER BY `name`;
+
+SELECT `first_name`, `last_name`, `job_title`, `salary` FROM `employees` ORDER BY `salary` DESC;
+
+-- 19. Increase Employees Salary
+update employees set salary = salary * 1.1;
+
+select salary from employees;
+
+-- 20. Decrease Tax Rate
+UPDATE `payments` 
+SET  `tax_rate` = `tax_rate` * 0.97;
+
+SELECT `tax_rate` FROM `payments`;
+
+-- 21. Delete All Records
+truncate table occupancies;
