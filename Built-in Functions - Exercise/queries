@@ -1,0 +1,84 @@
+01.
+select first_name, last_name 
+from employees 
+where substring(first_name,1,2) = 'Sa' 
+order by employee_id;
+
+02.
+select first_name, last_name 
+from employees
+ where locate('ei',last_name) 
+ order by employee_id;
+
+ 03.
+ select first_name from employees 
+where department_id in(3,10) 
+and year(hire_date) between 1995 and 2005 order by employee_id; 
+
+04.
+select first_name, last_name from employees where (job_title not like '%engineer%');
+
+05.
+select name from towns where length(name) in(5,6) order by name ASC; 
+
+06.
+select town_id,name from towns 
+where (name like 'M%' or name like 'K%' or name like 'B%' or name like 'E%') 
+order by name ASC;
+
+07.
+select town_id, name from towns 
+where not (name like 'R%' or name like 'B%' or name like 'D%') 
+order by name ASC;
+
+08.
+create view v_employees_hired_after_2000 as select first_name, last_name 
+from employees
+ where year(hire_date) > 2000;
+
+ 09.
+  select first_name, last_name from employees where char_length(last_name) = 5;
+
+10.
+select country_name, iso_code from countries where (country_name like '%a%a%a%' ) order by iso_code;
+
+11.
+select peak_name, river_name,  
+lower(concat(peak_name, substring(river_name,2))) as 'mix' 
+from peaks,rivers where lower(right(peak_name,1) = left(river_name,1)) order by mix;
+
+12.
+select name, DATE_FORMAT(`start`, '%Y-%m-%d') as start 
+from games where year(start) in(2011,2012) 
+order by start, name limit 50;
+
+13.
+select user_name, substring_index(email,'@', -1) as email 
+from users order by email , user_name;
+
+14.
+select user_name, ip_address from users where ip_address like'___.1%.%.___' order by user_name ASC;
+
+15.
+select name as 'game' ,
+	case
+		when hour(start) >= 0 and hour(start) <12 then 'Morning'
+        when hour(start) >= 12 and hour(start) <18 then 'Afternoon'
+        when hour(start) >= 18 and hour(start) <24 then 'Evening'
+	end as 'Part of the Day',
+    
+    case
+		when duration <= 3 then 'Extra Short'
+        when duration > 3 and duration <= 6 then 'Short'
+        when duration > 6 and duration <= 10 then 'Long'
+        else 'Extra Long'
+        end as 'Duration'
+        
+        from games;
+
+
+16.
+select product_name as 'product_name', order_date,
+date_add(order_date, interval 3 day) as 'pay_due',
+date_add(order_date, interval 1 month) as 'deliver_due'
+from orders;
